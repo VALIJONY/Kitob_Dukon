@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitob Do'koni | Zamonaviy Online Kutubxona</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@1.14.0/dist/full.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #f8fafc;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .book-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .book-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        }
+
+        .category-card {
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input {
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+            transform: scale(1.02);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+
+        .author-card-text {
+            color: #1f2937; /* qora rang */
+        }
+
+        .author-name {
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        .author-image {
+            filter: grayscale(100%);
+            transition: filter 0.3s ease;
+        }
+
+        .author-image:hover {
+            filter: grayscale(0%);
+        }
+
+        /* Kategoriya kartochkalaridagi matnlar uchun yangi stil */
+        .category-card h4 {
+            color: #1f2937; /* qora rang */
+        }
+        
+        .category-card p {
+            color: #4b5563; /* to'q kulrang */
+        }
+    </style>
+</head>
+<body class="custom-scrollbar">
+    <!-- Navigation -->
+    <nav class="glass-effect fixed w-full z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-book-open text-2xl text-white"></i>
+                        </div>
+                        <h1 class="text-2xl font-bold gradient-text">Kitob Do'koni</h1>
+                    </div>
+                    <div class="hidden lg:flex items-center space-x-6">
+                        <a href="home.html" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Bosh Sahifa</a>
+                        <a href="kitoblar.html" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Yangi Kitoblar</a>
+                        <a href="#main-content" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Kategoriyalar</a>
+                        <a href="audiofayl.html" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Audio Kitoblar</a>
+                        <a href="#mualliflar" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Mualliflar</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div class="hidden md:block relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                        <input type="text" 
+                               id="searchInput"
+                               placeholder="Kitob, muallif yoki janr qidirish..." 
+                               class="search-input w-80 pl-10 pr-4 py-2 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none bg-gray-50">
+                        <!-- Qidiruv natijalari -->
+                        <div id="searchResults" class="hidden absolute w-full mt-2 bg-white rounded-xl shadow-lg z-50">
+                            <!-- Natijalar dinamik ravishda JavaScript orqali to'ldiriladi -->
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="bg-gray-100 p-2 rounded-lg hover:bg-gray-200 transition-all">
+                            <i class="far fa-heart text-gray-600"></i>
+                        </button>
+                        <div class="relative group">
+                            <button class="bg-blue-600 text-white px-6 py-2.5 rounded-xl hover:bg-blue-700 transition-all flex items-center space-x-2 group-hover:shadow-lg">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="hidden md:inline"><a href="savatcha.html">Savatcha</a></span>
+                                <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">3</span>
+                            </button>
+                        </div>
+                     <a href="login.html"><button class="hidden md:flex items-center space-x-2 border-2 border-blue-500 bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 hover:border-blue-600 transition-all">
+                        <i class="far fa-user"></i>
+                        <span>Kirish</span>
+                    </button></a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-gradient pt-32 pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="text-white space-y-8">
+                    <h2 class="text-5xl font-bold leading-tight">Bilim olish uchun eng yaxshi kitoblar</h2>
+                    <p class="text-xl text-blue-100 leading-relaxed">O'zbekiston bo'ylab eng katta elektron kutubxona. 50,000+ kitoblar, audio kitoblar va elektron kitoblar bizning kutubxonamizda</p>
+                    <div class="flex flex-wrap gap-4">
+                        <button class="bg-white text-blue-600 px-8 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-all shadow-lg hover:shadow-xl">
+                            <i class="fas fa-book-open mr-2"></i>Kitoblarni ko'rish
+                        </button>
+                        <button class="border-2 border-white text-white px-8 py-3 rounded-xl font-semibold hover:bg-white hover:text-blue-600 transition-all">
+                            <i class="fas fa-headphones mr-2"></i>Audio kitoblar
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-8 pt-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-users text-3xl text-blue-200 mr-3"></i>
+                            <div>
+                                <h4 class="text-2xl font-bold">100K+</h4>
+                                <p class="text-blue-200">Foydalanuvchilar</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-book text-3xl text-blue-200 mr-3"></i>
+                            <div>
+                                <h4 class="text-2xl font-bold">50K+</h4>
+                                <p class="text-blue-200">Kitoblar</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden lg:block relative">
+                    <div class="absolute -top-10 -right-10 w-72 h-72 bg-blue-400 rounded-full filter blur-3xl opacity-20"></div>
+                    <div class="absolute -bottom-10 -left-10 w-72 h-72 bg-blue-600 rounded-full filter blur-3xl opacity-20"></div>
+                    <img src="https://media.gettyimages.com/id/1336994560/video/islamic-concept-the-holy-al-quran-with-written-arabic-calligraphy-meaning-of-al-quran-and-a.jpg?s=640x640&k=20&c=D8buqn0_KXq5ilRvmDjJQf2DeP3Zjghpz9diLZ-W1Wc=" 
+                         alt="Books Collection" 
+                         class="relative rounded-2xl shadow-2xl">
+                </div>
+                
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <!-- Categories Section -->
+        <section class="mb-20">
+            <div class="flex items-center justify-between mb-10">
+                <h3 class="text-2xl font-bold text-gray-800">Mashhur kategoriyalar</h3>
+                <a href="#" class="text-blue-600 hover:text-blue-700 font-medium flex items-center" id="show-all-btn">
+                    Barcha kategoriyalar
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6" id="categories-grid">
+                <!-- Existing categories -->
+                <div class="category-card bg-white p-6 rounded-xl shadow-sm text-center space-y-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto">
+                        <i class="fas fa-history text-2xl text-blue-600"></i>
+                    </div>
+                    <h4 class="font-semibold">Tarix</h4>
+                    <p class="text-sm text-gray-500">450+ kitob</p>
+                </div>
+                <div class="category-card bg-white p-6 rounded-xl shadow-sm text-center space-y-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mx-auto">
+                        <i class="fas fa-flask text-2xl text-purple-600"></i>
+                    </div>
+                    <h4 class="font-semibold">Fan</h4>
+                    <p class="text-sm text-gray-500">320+ kitob</p>
+                </div>
+                <div class="category-card bg-white p-6 rounded-xl shadow-sm text-center space-y-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mx-auto">
+                        <i class="fas fa-brain text-2xl text-green-600"></i>
+                    </div>
+                    <h4 class="font-semibold">Psixologiya</h4>
+                    <p class="text-sm text-gray-500">280+ kitob</p>
+                </div>
+                <div class="category-card bg-white p-6 rounded-xl shadow-sm text-center space-y-4">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mx-auto">
+                        <i class="fas fa-laptop-code text-2xl text-yellow-600"></i>
+                    </div>
+                    <h4 class="font-semibold">Dasturlash</h4>
+                    <p class="text-sm text-gray-500">150+ kitob</p>
+                </div>
+                <div class="category-card bg-white p-6 rounded-xl shadow-sm text-center space-y-4">
+                    <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center mx-auto">
+                        <i class="fas fa-heart text-2xl text-red-600"></i>
+                    </div>
+                    <h4 class="font-semibold">Romance</h4>
+                    <p class="text-sm text-gray-500">600+ kitob</p>
+                </div>
+                <div class="category-card bg-white p-6 rounded-xl shadow-sm text-center space-y-4">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center mx-auto">
+                        <i class="fas fa-microscope text-2xl text-indigo-600"></i>
+                    </div>
+                    <h4 class="font-semibold">Ilmiy</h4>
+                    <p class="text-sm text-gray-500">200+ kitob</p>
+                </div>
+            </div>
+    
+            <!-- Hidden categories (initially hidden) -->
+            <div id="extra-categories" style="padding-top: 20px;" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 hidden">
+                <!-- New categories go here -->
+                <div class="category-card bg-white p-6 rounded-xl shadow-sm text-center space-y-4">
+                    <div class="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center mx-auto">
+                        <i class="fas fa-cogs text-2xl text-teal-600"></i>
+                    </div>
+                    <h4 class="font-semibold">Texnologiya</h4>
+                    <p class="text-sm text-gray-500">100+ kitob</p>
+                </div>
+                <div class="category-card bg-white p-6 rounded-xl shadow-sm text-center space-y-4">
+                    <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center mx-auto">
+                        <i class="fas fa-paint-brush text-2xl text-orange-600"></i>
+                    </div>
+                    <h4 class="font-semibold">San'at</h4>
+                    <p class="text-sm text-gray-500">250+ kitob</p>
+                </div>
+                <div class="category-card bg-white p-6 rounded-xl shadow-sm text-center space-y-4">
+                    <div class="w-12 h-12 bg-pink-100 rounded-xl flex items-center justify-center mx-auto">
+                        <i class="fas fa-camera text-2xl text-pink-600"></i>
+                    </div>
+                    <h4 class="font-semibold">Fotografiya</h4>
+                    <p class="text-sm text-gray-500">80+ kitob</p>
+                </div>
+                <div class="category-card bg-white p-6 rounded-xl shadow-sm text-center space-y-4">
+                    <div class="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center mx-auto">
+                        <i class="fas fa-globe text-2xl text-gray-600"></i>
+                    </div>
+                    <h4 class="font-semibold">Geografiya</h4>
+                    <p class="text-sm text-gray-500">120+ kitob</p>
+                </div>
+                <div class="category-card bg-white p-6 rounded-xl shadow-sm text-center space-y-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mx-auto">
+                        <i class="fas fa-music text-2xl text-blue-600"></i>
+                    </div>
+                    <h4 class="font-semibold">Musiqa</h4>
+                    <p class="text-sm text-gray-500">200+ kitob</p>
+                </div>
+                <div class="category-card bg-white p-6 rounded-xl shadow-sm text-center space-y-4">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center mx-auto">
+                        <i class="fas fa-utensils text-2xl text-yellow-600"></i>
+                    </div>
+                    <h4 class="font-semibold">Taomlar</h4>
+                    <p class="text-sm text-gray-500">50+ kitob</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        document.getElementById('show-all-btn').addEventListener('click', function (event) {
+            event.preventDefault();
+            // Show the extra categories and hide the 'Barcha kategoriyalar' link
+            document.getElementById('extra-categories').classList.remove('hidden');
+            this.style.display = 'none';
+    
+            // Ensure that the new grid items are displayed correctly by forcing a reflow
+            setTimeout(function() {
+                document.getElementById('categories-grid').classList.add('grid-cols-2', 'md:grid-cols-3', 'lg:grid-cols-6');
+            }, 10);
+        });
+    </script>
+    
+        <!-- Featured Books -->
+        <section class="mb-16">
+            <div class="flex justify-between items-center mb-8 px-4">
+                <h3 class="text-2xl font-bold text-gray-800">Tavsiya etilgan kitoblar</h3>
+                <a href="kitoblar.html" class="text-blue-600 hover:text-blue-700 font-medium">Barchasini ko'rish 
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
+                <!-- Book 1 -->
+                <div class="book-card bg-white rounded-xl overflow-hidden shadow-md transition-transform transform hover:scale-95">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/Y9cCQXyW5FQ/hqdefault.jpg?sqp=-oaymwEmCOADEOgC8quKqQMa8AEB-AHUBoAC4AOKAgwIABABGGUgZShlMA8=&rs=AOn4CLBmRzUms75B7ReQmFpnxpOx6PqAlQ" alt="Kecha va kunduz" class="w-full h-56 object-cover">
+                        <div class="absolute top-2 right-2">
+                            <button class="bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-colors">
+                                <i class="far fa-heart text-red-500"></i>
+                            </button>
+                        </div>
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm">-20%</span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-lg mb-2 cursor-pointer text-blue-600 hover:text-blue-700">Kecha va kunduz</h4>
+                        <p class="text-gray-600 text-sm mb-2">Cho'lpon</p>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-gray-500 text-sm ml-2">(4.5)</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-blue-600">95,000 so'm</span>
+                                <span class="text-gray-400 text-sm line-through ml-2">120,000 so'm</span>
+                            </div>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Sotib olish</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Book 2 -->
+                <div class="book-card bg-white rounded-xl overflow-hidden shadow-md transition-transform transform hover:scale-95">
+                    <div class="relative">
+                        <img src="https://i.ytimg.com/vi/9q1BH7RvcOs/maxresdefault.jpg" alt="Sariq devni minib" class="w-full h-56 object-cover">
+                        <div class="absolute top-2 right-2">
+                            <button class="bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-colors">
+                                <i class="far fa-heart text-red-500"></i>
+                            </button>
+                        </div>
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm">-15%</span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-lg mb-2 cursor-pointer text-blue-600 hover:text-blue-700">Sariq devni minib</h4>
+                        <p class="text-gray-600 text-sm mb-2">Xudoyberdi To'xtaboyev</p>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-gray-500 text-sm ml-2">(5.0)</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-blue-600">85,000 so'm</span>
+                                <span class="text-gray-400 text-sm line-through ml-2">100,000 so'm</span>
+                            </div>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Sotib olish</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Book 3 -->
+                <div class="book-card bg-white rounded-xl overflow-hidden shadow-md transition-transform transform hover:scale-95">
+                    <div class="relative">
+                        <img src="https://assets.asaxiy.uz/product/main_image/mobile/65c2158cc73dc.jpg.webp" alt="Yulduzli tunlar" class="w-full h-56 object-cover">
+                        <div class="absolute top-2 right-2">
+                            <button class="bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-colors">
+                                <i class="far fa-heart text-red-500"></i>
+                            </button>
+                        </div>
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm">-25%</span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-lg mb-2 cursor-pointer text-blue-600 hover:text-blue-700">Yulduzli tunlar</h4>
+                        <p class="text-gray-600 text-sm mb-2">Pirimqul Qodirov</p>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="text-gray-500 text-sm ml-2">(4.0)</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-blue-600">110,000 so'm</span>
+                                <span class="text-gray-400 text-sm line-through ml-2">145,000 so'm</span>
+                            </div>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Sotib olish</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Book 4 -->
+                <div class="book-card bg-white rounded-xl overflow-hidden shadow-md transition-transform transform hover:scale-95">
+                    <div class="relative">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgv5pHUGDHGeyc-Nde8O9SnxJ4cfspTXyrUQ&s" 
+                             alt="O'tkan kunlar" 
+                             class="w-full h-56 object-cover">
+                        <div class="absolute top-2 right-2">
+                            <button class="bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-colors">
+                                <i class="far fa-heart text-red-500"></i>
+                            </button>
+                        </div>
+                        <div class="absolute top-2 left-2">
+                            <span class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm">-30%</span>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-lg mb-2 cursor-pointer text-blue-600 hover:text-blue-700">O'tkan kunlar</h4>
+                        <p class="text-gray-600 text-sm mb-2">Abdulla Qodiriy</p>
+                        <div class="flex items-center mb-2">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-gray-500 text-sm ml-2">(5.0)</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-blue-600">84,000 so'm</span>
+                                <span class="text-gray-400 text-sm line-through ml-2">120,000 so'm</span>
+                            </div>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Sotib olish</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        
+       <!-- Modal for Book Information -->
+<div id="bookModal" class="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 hidden">
+    <div class="bg-white p-6 rounded-xl max-w-md w-full">
+        <!-- Change text color to black -->
+        <h3 class="text-2xl font-bold mb-4 text-black" id="modalBookTitle"></h3>
+        <p class="text-sm text-gray-600 mb-4" id="modalBookAuthor"></p>
+        <p class="text-sm text-gray-600 mb-4" id="modalBookPrice"></p>
+        <p class="text-sm text-gray-500 mb-4" id="modalBookDescription"></p>
+        <button onclick="closeModal()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Yopish</button>
+    </div>
+</div>
+
+        
+        <script>
+            function showModal(title, author, price, description) {
+                document.getElementById('modalBookTitle').innerText = title;
+                document.getElementById('modalBookAuthor').innerText = author;
+                document.getElementById('modalBookPrice').innerText = price;
+                document.getElementById('modalBookDescription').innerText = description;
+                document.getElementById('bookModal').classList.remove('hidden');
+            }
+        
+            function closeModal() {
+                document.getElementById('bookModal').classList.add('hidden');
+            }
+        </script>
+        
+<!-- Mualliflar Section -->
+<section id="mualliflar" class="mb-20 px-4">
+    <div class="flex justify-between items-center mb-8">
+        <h3 class="text-2xl font-bold text-gray-800">Mashhur Mualliflar</h3>
+        <a href="#" class="text-blue-600 hover:text-blue-700 font-medium flex items-center">
+            Barcha mualliflar
+            <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+    </div>
+
+    <!-- Mualliflar Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <!-- Muallif 1 -->
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+            <div class="text-center mb-4">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTh_uRg5831nsAwfHc7tuCbWCy7gT9C7qHckg&s" 
+                     alt="Abdulla Qodiriy" 
+                     class="author-image w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-blue-50">
+                <h4 class="author-name text-lg">Abdulla Qodiriy</h4>
+                <p class="author-card-text text-sm">1894-1938</p>
+            </div>
+            <div class="space-y-2">
+                <div class="flex justify-between text-sm">
+                    <span class="author-card-text">Asarlar soni:</span>
+                    <span class="author-card-text font-semibold">15+</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="author-card-text">Eng mashhur asari:</span>
+                    <span class="author-card-text font-semibold">O'tkan kunlar</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="author-card-text">Janr:</span>
+                    <span class="author-card-text font-semibold">Tarixiy roman</span>
+                </div>
+            </div>
+            <div class="mt-4 flex justify-between items-center">
+                <button class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors text-sm">
+                    <i class="fas fa-book-open mr-2"></i>Asarlari
+                </button>
+                <button class="text-gray-400 hover:text-blue-600 transition-colors">
+                    <i class="far fa-bookmark text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Muallif 2 -->
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+            <div class="text-center mb-4">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr5TpuBVaLFD4gxrI3B8AcVoWDAyLBt8HoqQ&s" 
+                     alt="O'tkir Hoshimov" 
+                     class="author-image w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-blue-50">
+                <h4 class="author-name text-lg">O'tkir Hoshimov</h4>
+                <p class="author-card-text text-sm">1941-2013</p>
+            </div>
+            <div class="space-y-2">
+                <div class="flex justify-between text-sm">
+                    <span class="author-card-text">Asarlar soni:</span>
+                    <span class="author-card-text font-semibold">20+</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="author-card-text">Eng mashhur asari:</span>
+                    <span class="author-card-text font-semibold">Dunyoning ishlari</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="author-card-text">Janr:</span>
+                    <span class="author-card-text font-semibold">Zamonaviy adabiyot</span>
+                </div>
+            </div>
+            <div class="mt-4 flex justify-between items-center">
+                <button class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors text-sm">
+                    <i class="fas fa-book-open mr-2"></i>Asarlari
+                </button>
+                <button class="text-gray-400 hover:text-blue-600 transition-colors">
+                    <i class="far fa-bookmark text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Muallif 3 -->
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+            <div class="text-center mb-4">
+                <img src="https://upload.wikimedia.org/wikipedia/ru/5/50/Said_Ahmad.jpg" 
+                     alt="Said Ahmad" 
+                     class="author-image w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-blue-50">
+                <h4 class="author-name text-lg">Said Ahmad</h4>
+                <p class="author-card-text text-sm">1920-2007</p>
+            </div>
+            <div class="space-y-2">
+                <div class="flex justify-between text-sm">
+                    <span class="author-card-text">Asarlar soni:</span>
+                    <span class="author-card-text font-semibold">25+</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="author-card-text">Eng mashhur asari:</span>
+                    <span class="author-card-text font-semibold">Ufq</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="author-card-text">Janr:</span>
+                    <span class="author-card-text font-semibold">Roman, hikoya</span>
+                </div>
+            </div>
+            <div class="mt-4 flex justify-between items-center">
+                <button class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors text-sm">
+                    <i class="fas fa-book-open mr-2"></i>Asarlari
+                </button>
+                <button class="text-gray-400 hover:text-blue-600 transition-colors">
+                    <i class="far fa-bookmark text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Muallif 4 -->
+        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+            <div class="text-center mb-4">
+                <img src="https://cdn1.img.sputniknews.uz/img/07e7/09/1b/39371178_19:0:682:497_1920x0_80_0_0_1bd66761d28828a2160bc9310d2f8845.jpg" 
+                     alt="Pirimqul Qodirov" 
+                     class="author-image w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-blue-50">
+                <h4 class="author-name text-lg">Pirimqul Qodirov</h4>
+                <p class="author-card-text text-sm">1928-2010</p>
+            </div>
+            <div class="space-y-2">
+                <div class="flex justify-between text-sm">
+                    <span class="author-card-text">Asarlar soni:</span>
+                    <span class="author-card-text font-semibold">18+</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="author-card-text">Eng mashhur asari:</span>
+                    <span class="author-card-text font-semibold">Yulduzli tunlar</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="author-card-text">Janr:</span>
+                    <span class="author-card-text font-semibold">Tarixiy roman</span>
+                </div>
+            </div>
+            <div class="mt-4 flex justify-between items-center">
+                <button class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors text-sm">
+                    <i class="fas fa-book-open mr-2"></i>Asarlari
+                </button>
+                <button class="text-gray-400 hover:text-blue-600 transition-colors">
+                    <i class="far fa-bookmark text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ... existing code ... -->
+    
+        <!-- Yashirin mualliflar -->
+        <div id="hidden-authors" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 hidden mt-6">
+            <!-- Muallif 5 -->
+            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+                <div class="text-center mb-4">
+                    <img src="https://oyina.uz/storage/generations/September2021/l7kez6gRUHBadU0U9Di6.jpg" 
+                         alt="Erkin Vohidov" 
+                         class="author-image w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-blue-50">
+                    <h4 class="author-name text-lg">Erkin Vohidov</h4>
+                    <p class="author-card-text text-sm">1936-2016</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="author-card-text">Asarlar soni:</span>
+                        <span class="author-card-text font-semibold">40+</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="author-card-text">Eng mashhur asari:</span>
+                        <span class="author-card-text font-semibold">Tong nafasi</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="author-card-text">Janr:</span>
+                        <span class="author-card-text font-semibold">She'riyat</span>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-between items-center">
+                    <button class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors text-sm">
+                        <i class="fas fa-book-open mr-2"></i>Asarlari
+                    </button>
+                    <button class="text-gray-400 hover:text-blue-600 transition-colors">
+                        <i class="far fa-bookmark text-xl"></i>
+                    </button>
+                </div>
+            </div>
+    
+            <!-- Muallif 6 -->
+            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+                <div class="text-center mb-4">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXXbv1W7uFbeGPi7PNsK12il_Cud74A_9W8Q&s" 
+                         alt="Abdulla Oripov" 
+                         class="author-image w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-blue-50">
+                    <h4 class="author-name text-lg">Abdulla Oripov</h4>
+                    <p class="author-card-text text-sm">1941-2016</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="author-card-text">Asarlar soni:</span>
+                        <span class="author-card-text font-semibold">35+</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="author-card-text">Eng mashhur asari:</span>
+                        <span class="author-card-text font-semibold">Jannatga yo'l</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="author-card-text">Janr:</span>
+                        <span class="author-card-text font-semibold">She'riyat, Doston</span>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-between items-center">
+                    <button class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors text-sm">
+                        <i class="fas fa-book-open mr-2"></i>Asarlari
+                    </button>
+                    <button class="text-gray-400 hover:text-blue-600 transition-colors">
+                        <i class="far fa-bookmark text-xl"></i>
+                    </button>
+                </div>
+            </div>
+    
+            <!-- Muallif 7 -->
+            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+                <div class="text-center mb-4">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQken2oM9XAbmDWiPzYCYfdEwpIHqZ959owdg&s" 
+                         alt="Muhammad Yusuf" 
+                         class="author-image w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-blue-50">
+                    <h4 class="author-name text-lg">Muhammad Yusuf</h4>
+                    <p class="author-card-text text-sm">1954-2001</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="author-card-text">Asarlar soni:</span>
+                        <span class="author-card-text font-semibold">25+</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="author-card-text">Eng mashhur asari:</span>
+                        <span class="author-card-text font-semibold">Ulug'imsan, Vatanim</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="author-card-text">Janr:</span>
+                        <span class="author-card-text font-semibold">She'riyat</span>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-between items-center">
+                    <button class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors text-sm">
+                        <i class="fas fa-book-open mr-2"></i>Asarlari
+                    </button>
+                    <button class="text-gray-400 hover:text-blue-600 transition-colors">
+                        <i class="far fa-bookmark text-xl"></i>
+                    </button>
+                </div>
+            </div>
+    
+            <!-- Muallif 8 -->
+            <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1">
+                <div class="text-center mb-4">
+                    <img src="https://lh4.googleusercontent.com/proxy/syB0T-m5bPf7Htiy8vkMGnA4MWSWwWo7l1J2EDtNSpeWp2R-BKO7a0GPk38daqjKIM9Ta2jf1K-uS98reZmPQmaZv2vYfVtqjCzIWZrydMMBuHoQ5NTT" 
+                         alt="Ozod Sharafiddinov" 
+                         class="author-image w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-blue-50">
+                    <h4 class="author-name text-lg">Ozod Sharafiddinov</h4>
+                    <p class="author-card-text text-sm">1929-2005</p>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="author-card-text">Asarlar soni:</span>
+                        <span class="author-card-text font-semibold">30+</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="author-card-text">Eng mashhur asari:</span>
+                        <span class="author-card-text font-semibold">Dovondagi o'ylar</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="author-card-text">Janr:</span>
+                        <span class="author-card-text font-semibold">Adabiyotshunoslik</span>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-between items-center">
+                    <button class="bg-blue-50 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors text-sm">
+                        <i class="fas fa-book-open mr-2"></i>Asarlari
+                    </button>
+                    <button class="text-gray-400 hover:text-blue-600 transition-colors">
+                        <i class="far fa-bookmark text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Ko'proq ko'rish tugmasi -->
+        <div class="text-center mt-10">
+            <button id="show-more-authors" class="bg-white text-blue-600 px-8 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-colors border-2 border-blue-100 inline-flex items-center">
+                <i class="fas fa-users mr-2"></i>
+                Ko'proq mualliflarni ko'rish
+            </button>
+        </div>
+    </section>
+    
+    <!-- JavaScript qismi -->
+    <script>
+    document.getElementById('show-more-authors').addEventListener('click', function() {
+        const hiddenAuthors = document.getElementById('hidden-authors');
+        const button = document.getElementById('show-more-authors');
+        
+        if (hiddenAuthors.classList.contains('hidden')) {
+            hiddenAuthors.classList.remove('hidden');
+            button.innerHTML = '<i class="fas fa-users mr-2"></i>Kamroq ko\'rsatish';
+        } else {
+            hiddenAuthors.classList.add('hidden');
+            button.innerHTML = '<i class="fas fa-users mr-2"></i>Ko\'proq mualliflarni ko\'rish';
+        }
+    });
+    </script>
+
+      
+
+                <!-- Testimonial 3 -->
+               <!-- Testimonials section -->
+<section class="mb-20 px-4">
+    <h3 class="text-2xl font-bold text-gray-800 mb-8">Mijozlar fikrlari</h3>
+    
+    <!-- Testimonials grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Testimonial 1 -->
+        <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+            <div class="flex items-center mb-6">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" 
+                     alt="Aziz Karimov" 
+                     class="w-16 h-16 rounded-full border-4 border-blue-50 object-cover">
+                <div class="ml-4">
+                    <h4 class="font-semibold text-lg" style="color: black;">Aziz Karimov</h4>
+                    <p class="text-gray-500 text-sm">Doimiy mijoz</p>
+                    <div class="flex text-yellow-400 mt-1">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+            <blockquote class="text-gray-600 leading-relaxed mb-4">
+                "Kitoblar sifati a'lo darajada. Yetkazib berish xizmati ham juda tez va qulay. Har doim bu yerdan kitob sotib olaman va do'stlarimga ham tavsiya qilaman!"
+            </blockquote>
+            <div class="flex items-center justify-between text-sm text-gray-500">
+                <span>2 kun oldin</span>
+                <div class="flex items-center">
+                    <i class="fas fa-thumbs-up text-blue-500 mr-1"></i>
+                    <span>128</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+            <div class="flex items-center mb-6">
+                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" 
+                     alt="Nilufar Sobirova" 
+                     class="w-16 h-16 rounded-full border-4 border-blue-50 object-cover">
+                <div class="ml-4">
+                    <h4 class="font-semibold text-lg" style="color: black;">Nilufar Sobirova</h4>
+                    <p class="text-gray-500 text-sm">O'qituvchi</p>
+                    <div class="flex text-yellow-400 mt-1">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+            <blockquote class="text-gray-600 leading-relaxed mb-4">
+                "Eng yaxshi online kitob do'koni. Ko'p kitoblarni faqat shu yerdan topish mumkin. Audio kitoblar bo'limi ham juda qulay. O'quvchilarimga doim tavsiya qilaman."
+            </blockquote>
+            <div class="flex items-center justify-between text-sm text-gray-500">
+                <span>1 hafta oldin</span>
+                <div class="flex items-center">
+                    <i class="fas fa-thumbs-up text-blue-500 mr-1"></i>
+                    <span>95</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
+            <div class="flex items-center mb-6">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" 
+                     alt="Jamshid Musayev" 
+                     class="w-16 h-16 rounded-full border-4 border-blue-50 object-cover">
+                <div class="ml-4">
+                    <h4 class="font-semibold text-lg" style="color: black;">Jamshid Musayev</h4>
+                    <p class="text-gray-500 text-sm">Talaba</p>
+                    <div class="flex text-yellow-400 mt-1">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+            <blockquote class="text-gray-600 leading-relaxed mb-4">
+                "Narxlar ham juda qulay, kitoblar tanlovi ham keng. Elektron to'lov tizimi juda qulay ishlaydi. Yetkazib berish tez va xavfsiz. Tavsiya qilaman!"
+            </blockquote>
+            <div class="flex items-center justify-between text-sm text-gray-500">
+                <span>3 kun oldin</span>
+                <div class="flex items-center">
+                    <i class="fas fa-thumbs-up text-blue-500 mr-1"></i>
+                    <span>76</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- "Ko'proq fikrlar" tugmasi -->
+    <div class="text-center mt-10">
+        <button class="bg-white text-blue-600 px-6 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-colors border-2 border-blue-100 flex items-center mx-auto">
+            <i class="fas fa-comments mr-2"></i>
+            Ko'proq fikrlarni ko'rish
+        </button>
+    </div>
+</section>
+
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white text-center py-4">
+            <p>&copy; 2024 Kitob Do'koni. Barcha huquqlar himoyalangan.</p>
+            <div class="flex justify-center space-x-4 mt-2">
+                <a href="#" class="text-white hover:text-blue-400">Facebook</a>
+                <a href="#" class="text-white hover:text-blue-400">Twitter</a>
+                <a href="#" class="text-white hover:text-blue-400">Instagram</a>
+            </div>
+        </footer>
+        
+  </main>
+</body>
+</html>

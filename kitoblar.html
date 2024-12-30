@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitoblar</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@1.14.0/dist/full.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #f8fafc;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        .book-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .book-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        }
+
+        .category-card {
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input {
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+            transform: scale(1.02);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <nav class="glass-effect fixed w-full z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-800 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-book-open text-2xl text-white"></i>
+                        </div>
+                        <h1 class="text-2xl font-bold gradient-text">Kitob Do'koni</h1>
+                    </div>
+                    <div class="hidden lg:flex items-center space-x-6">
+                        <a href="home.html" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Bosh Sahifa</a>
+                        <a href="kitoblar.html" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Yangi Kitoblar</a>
+                        <a href="home.html" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Kategoriyalar</a>
+                        <a href="audiofayl.html" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Audio Kitoblar</a>
+                        <a href="home.html" class="nav-link text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium">Mualliflar</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div class="hidden md:block relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                        <input type="text" 
+                               id="searchInput"
+                               placeholder="Kitob, muallif yoki janr qidirish..." 
+                               class="search-input w-80 pl-10 pr-4 py-2 rounded-xl border-2 border-gray-200 focus:border-blue-500 focus:outline-none bg-gray-50">
+                        <!-- Qidiruv natijalari -->
+                        <div id="searchResults" class="hidden absolute w-full mt-2 bg-white rounded-xl shadow-lg z-50">
+                            <!-- Natijalar dinamik ravishda JavaScript orqali to'ldiriladi -->
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="bg-gray-100 p-2 rounded-lg hover:bg-gray-200 transition-all">
+                            <i class="far fa-heart text-gray-600"></i>
+                        </button>
+                        <div class="relative group">
+                            <button class="bg-blue-600 text-white px-6 py-2.5 rounded-xl hover:bg-blue-700 transition-all flex items-center space-x-2 group-hover:shadow-lg">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="hidden md:inline"><a href="savatcha.html">Savatcha</a></span>
+                                <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">3</span>
+                            </button>
+                        </div>
+                     <a href="login.html"><button class="hidden md:flex items-center space-x-2 border-2 border-blue-500 bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 hover:border-blue-600 transition-all">
+                        <i class="far fa-user"></i>
+                        <span>Kirish</span>
+                    </button></a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+
+
+    <main class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Kitoblar</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            <!-- Avvalgi 10 ta kitob -->
+            
+            <!-- Kitob 11 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow max-w-[280px]">
+                <div class="relative h-80">
+                    <img src="https://backend.book.uz/user-api/img/img-37a17b4866981aa9ebde8f033d70b723.jpg" alt="O'tkan kunlar" class="absolute w-full h-full object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2 text-black">O'tkan kunlar</h3>
+                    <p class="text-gray-800 text-sm mb-2">Abdulla Qodiriy</p>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-gray-700 text-sm ml-2">(5.0)</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-black">45,000 so'm</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Savatga
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kitob 12 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow max-w-[280px]">
+                <div class="relative h-80">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6BhCS9Jf4Cb3SFdSrs3ZsmxoeyPG3G_5zsA&s" alt="Mehrobdan chayon" class="absolute w-full h-full object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2 text-black">Mehrobdan chayon</h3>
+                    <p class="text-gray-800 text-sm mb-2">Abdulla Qodiriy</p>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="text-gray-700 text-sm ml-2">(4.5)</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-black">43,000 so'm</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Savatga
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kitob 13 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow max-w-[280px]">
+                <div class="relative h-80">
+                    <img src="https://mykitob.uz/wp-content/uploads/2024/03/cholpon-kecha-va-kunduz.jpg" alt="Kecha va kunduz" class="absolute w-full h-full object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2 text-black">Kecha va kunduz</h3>
+                    <p class="text-gray-800 text-sm mb-2">Cho'lpon</p>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <span class="text-gray-700 text-sm ml-2">(4.0)</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-black">38,000 so'm</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Savatga
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kitob 14 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow max-w-[280px]">
+                <div class="relative h-80">
+                    <img src="https://hilolnashr.uz/image/cache/catalog/bolalar/sariq-devni-minib-500x750.jpg" alt="Sariq devni minib" class="absolute w-full h-full object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2 text-black">Sariq devni minib</h3>
+                    <p class="text-gray-800 text-sm mb-2">Xudoyberdi To'xtaboyev</p>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-gray-700 text-sm ml-2">(5.0)</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-black">32,000 so'm</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Savatga
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kitob 15 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow max-w-[280px]">
+                <div class="relative h-80">
+                    <img src="https://assets.asaxiy.uz/product/items/desktop/8485ae387a981d783f8764e508151cd92022051020040372434xJKFoacCs0.jpg.webp" alt="Shaytanat" class="absolute w-full h-full object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2 text-black">Shaytanat</h3>
+                    <p class="text-gray-800 text-sm mb-2">Tohir Malik</p>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="text-gray-700 text-sm ml-2">(4.5)</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-black">75,000 so'm</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Savatga
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kitob 16 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow max-w-[280px]">
+                <div class="relative h-80">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQspT-DAeqFT8YMJDgARjXEf_e5O4RKVPOh6g&s" alt="Ikki eshik orasi" class="absolute w-full h-full object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2 text-black">Ikki eshik orasi</h3>
+                    <p class="text-gray-800 text-sm mb-2">O'tkir Hoshimov</p>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-gray-700 text-sm ml-2">(5.0)</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-black">48,000 so'm</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Savatga
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kitob 17 -->
+            <div class="  bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow max-w-[280px]">
+                <div class="relative h-80">
+                    <img src="https://api.mutolaa.com/media/books/2024/02/dunyoning_ishlari.png" alt="Dunyoning ishlari" class="absolute w-full h-full object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2 text-black">Dunyoning ishlari</h3>
+                    <p class="text-gray-800 text-sm mb-2">O'tkir Hoshimov</p>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-gray-700 text-sm ml-2">(5.0)</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-black">55,000 so'm</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Savatga
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kitob 18 -->
+            <div class=" bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow max-w-[280px]">
+                <div class="relative h-80">
+                    <img src="https://hilolnashr.uz/image/cache/catalog/bolalar/2018-02-08/bahor-qaytmaydi-550x550h.jpg" alt="Bahor qaytmaydi" class="absolute w-full h-full object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2 text-black">Bahor qaytmaydi</h3>
+                    <p class="text-gray-800 text-sm mb-2">O'tkir Hoshimov</p>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="text-gray-700 text-sm ml-2">(4.5)</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-black">42,000 so'm</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Savatga
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kitob 19 -->
+            <div class="hidden page-2 bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow max-w-[280px]">
+                <div class="relative h-80">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiIP1xktOocvyS1eTBFl1010Unm8RAUdjIkw&s" alt="Tushda kechgan umrlar" class="absolute w-full h-full object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2 text-black">Tushda kechgan umrlar</h3>
+                    <p class="text-gray-800 text-sm mb-2">O'tkir Hoshimov</p>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <span class="text-gray-700 text-sm ml-2">(4.0)</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-black">38,000 so'm</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Savatga
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kitob 20 -->
+            <div class="hidden page-2 bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow max-w-[280px]">
+                <div class="relative h-80">
+                    <img src="https://hilolnashr.uz/image/cache/catalog/001-Kitoblar/003_boshqalar/002_badiy/2024/nur-borki-soya-bor-web-500x750.jpg" alt="Nur borki, soya bor" class="absolute w-full h-full object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2 text-black">Nur borki, soya bor</h3>
+                    <p class="text-gray-800 text-sm mb-2">O'tkir Hoshimov</p>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-gray-700 text-sm ml-2">(5.0)</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-black">45,000 so'm</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Savatga
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kitob 21 -->
+            <div class="hidden page-2 bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow max-w-[280px]">
+                <div class="relative h-80">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/Yoshlik_devoni.jpg" alt="Yoshlik devoni" class="absolute w-full h-full object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2 text-black">Yoshlik devoni</h3>
+                    <p class="text-gray-800 text-sm mb-2">Erkin Vohidov</p>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="text-gray-700 text-sm ml-2">(4.5)</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-black">40,000 so'm</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Savatga
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Kitob 22 -->
+            <div class="hidden page-2 bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow max-w-[280px]">
+                <div class="relative h-80">
+                    <img src="https://kitobxon.com/img_knigi/s5523.jpg" alt="Quyosh maskani" class="absolute w-full h-full object-contain p-2">
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-lg mb-2 text-black">Ruhlar isyoni</h3>
+                    <p class="text-gray-800 text-sm mb-2">Erkin Vohidov</p>
+                    <div class="flex items-center mb-2">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                        <span class="text-gray-700 text-sm ml-2">(4.0)</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-black">37,000 so'm</span>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                            Savatga
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+     
+
+        <!-- Sahifalash -->
+        <div class="flex justify-center mt-12">
+            <nav class="flex space-x-4">
+                <button onclick="showPage(currentPage-1)" class="px-4 py-2 bg-white text-blue-600 rounded-lg hover:bg-blue-50 flex items-center">
+                    <i class="fas fa-chevron-left mr-2"></i>
+                    Oldingi
+                </button>
+                <button onclick="showPage(currentPage+1)" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center">
+                    Keyingi
+                    <i class="fas fa-chevron-right ml-2"></i>
+                </button>
+            </nav>
+        </div>
+    <script>
+        let currentPage = 1;
+        const totalPages = 2;
+
+        function showPage(pageNum) {
+            if (pageNum < 1 || pageNum > totalPages) return;
+            
+            currentPage = pageNum;
+            
+            // Barcha sahifalarni yashirish
+            document.querySelectorAll('.page-1, .page-2').forEach(item => {
+                item.classList.add('hidden');
+            });
+            
+            // Tanlangan sahifani ko'rsatish
+            document.querySelectorAll(`.page-${currentPage}`).forEach(item => {
+                item.classList.remove('hidden');
+            });
+
+            // Oldingi/Keyingi tugmalarini yangilash
+            document.querySelector('button[onclick="showPage(currentPage-1)"]').disabled = currentPage === 1;
+            document.querySelector('button[onclick="showPage(currentPage+1)"]').disabled = currentPage === totalPages;
+        }
+
+        // Sahifani yuklanganda birinchi sahifani ko'rsatish
+        showPage(1);
+    </script>
+
+        
+    </main>
+</body>
+</html>
+
+
